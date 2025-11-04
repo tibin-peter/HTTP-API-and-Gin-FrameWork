@@ -23,6 +23,7 @@ func main() {
 	r.GET("/", homepage)
 	r.GET("/students", getstudents)
 	r.GET("/students/:id", getstudentsbyid)
+	r.GET("/top", topmark)
 
 	r.POST("/add", addstudent)
 
@@ -117,4 +118,13 @@ func updatestudentpartial(c *gin.Context) {
 		}
 	}
 	c.JSON(http.StatusBadRequest, gin.H{"error": "student not found"})
+}
+func topmark(c *gin.Context) {
+	var topstudent []Student
+	for _, s := range students {
+		if s.Mark > 80 {
+			topstudent = append(topstudent, s)
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{"topstudents": topstudent})
 }
